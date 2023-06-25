@@ -1,15 +1,23 @@
 import {
-  Suspense, useEffect, useState
+  Suspense, useEffect, useRef, useState
 } from "react"
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei"
+import { useFrame } from "@react-three/fiber"
 import Loader from '../Loader'
 
 const Computers = () => {
   const computer = useGLTF('./desktop_pc/scene.gltf')
+  const computerRef = useRef()
+
+  useFrame(() => {
+    if (computerRef.current.rotation.y < 1.4) {
+      computerRef.current.rotation.y += (1.4 - computerRef.current.rotation.y) / 50
+    }
+  })
 
   return (
-    <mesh>
+    <mesh ref={computerRef}>
       <hemisphereLight intensity={0.15}
         groundColor="black" />
       <pointLight intensity={1} />
@@ -25,7 +33,7 @@ const Computers = () => {
         object={computer.scene}
         scale={0.75}
         position={[0, -3.25, -1.5]}
-        rotation={[-0.01, -0.2, -0.1]}
+        rotation={[-0.01, 5, -0.1]}
       />
     </mesh>
   )
@@ -34,7 +42,7 @@ const Computers = () => {
 const ComputerCanvas = () => {
   return (
     <Canvas
-      frameloop="demand"
+      frameloop="always"
       shadows
       camera={{ position: [20, 3, 5], fov: 25 }}
       gl={{ preserveDrawingBuffer: true }}
