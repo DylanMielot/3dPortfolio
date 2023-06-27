@@ -43,7 +43,7 @@ const ComputerCanvas = () => {
   return (
     <Canvas
       frameloop="always"
-      shadows
+      shadows="soft"
       camera={{ position: [20, 3, 5], fov: 25 }}
       gl={{ preserveDrawingBuffer: true }}
     >
